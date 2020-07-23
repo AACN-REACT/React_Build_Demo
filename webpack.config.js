@@ -1,21 +1,31 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-module.exports = {
-  entry: { index_transfomed: "./src/index.js" },
-  output: {
-    filename: "[name].js",
-    path: path.resolve(__dirname, "src"),
-  },
-  module: {
-    rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: { presets: ["@babel/preset-react", "@babel/preset-env"] },
+module.exports = function (env) {
+  return {
+    mode: env.production ? "production" : "development",
+    entry: { index_transfomed: "./src/index.js" },
+    output: {
+      filename: "[name].js",
+      path: path.resolve(__dirname, env.production ? "dist" : "src"),
+    },
+    module: {
+      rules: [
+        {
+          test: /\.jsx?$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
+            options: { presets: ["@babel/preset-react", "@babel/preset-env"] },
+          },
         },
-      },
+      ],
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: "./public/index.html",
+        filename: "index.html",
+      }),
     ],
-  },
+  };
 };
