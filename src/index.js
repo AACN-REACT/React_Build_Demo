@@ -1,10 +1,7 @@
-
-
-function App(){
-
-    return React.createElement('h1',{},"Hello React working from CDN!!")
+function App() {
+  return <h1>Hello from JSX!!</h1>;
 }
 
-const root = document.getElementById('root')
+const root = document.getElementById("root");
 
-ReactDOM.render(App(),)
+ReactDOM.render(<App />, root);
