@@ -1,6 +1,8 @@
 const path = require("path");
 const MiniCssPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 
 module.exports = function (env) {
   return {
@@ -9,6 +11,17 @@ module.exports = function (env) {
     output: {
       filename: "[name].js",
       path: path.resolve(__dirname, env.production ? "dist" : "src"),
+    },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+            name: "vendor",
+            chunks: "all",
+          },
+        },
+      },
     },
     module: {
       rules: [
@@ -33,6 +46,7 @@ module.exports = function (env) {
         template: "./public/index.html",
         filename: "index.html",
       }),
+      new BundleAnalyzerPlugin(),
     ],
   };
 };
